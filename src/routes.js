@@ -51,4 +51,20 @@ export const routes = [
       return res.end(JSON.stringify(tasks))
     }
   },
+  {
+    method: 'PUT',
+    path: routePath('/tasks/:id'),
+    handler: (req, res) => {
+      const { id } = req.params
+      const { title, description } = req.body
+
+      database.update('tasks', id, {
+        title,
+        description,
+        updated_at: new Date().toISOString(),
+      })
+
+      return res.writeHead(204).end()
+    }
+  }
 ]
