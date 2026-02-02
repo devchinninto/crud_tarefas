@@ -1,12 +1,13 @@
 import { randomUUID } from 'node:crypto'
 import { Database } from './database.js'
+import { routePath } from './utils/route-path.js'
 
 const database = new Database()
 
 export const routes = [
   {
     method: 'POST',
-    path: '/tasks',
+    path: routePath('/tasks'),
     handler: (req, res) => {
       const { title, description } = req.body
 
@@ -26,9 +27,26 @@ export const routes = [
   },
   {
     method: 'GET',
-    path: '/tasks',
+    path: routePath('/tasks'),
     handler: (req, res) => {
-      const tasks = database.select('tasks')
+      const { search, title, description } = req.query
+
+      // Search object only with defined values
+      const searchParams = {}
+      // search will always be undefined
+      if (search) {
+        // creates .title and .description whitin searchParams
+        searchParams.title = search
+        searchParams.description = search
+      }
+
+      // actual query validation; if there's a query title or description (or both), atributtes their values.
+      if (title) searchParams.title = title
+      if (description) searchParams.description = description
+
+      const hasSearch = Object.keys(searchParams).length > 0
+
+      const tasks = database.select('tasks', hasSearch ? searchParams : null)
 
       return res.end(JSON.stringify(tasks))
     }

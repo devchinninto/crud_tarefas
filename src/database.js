@@ -1,5 +1,4 @@
 import fs from 'node:fs/promises'
-import { stringify } from 'node:querystring'
 
 const databasePath = new URL('../db.json', import.meta.url)
 
@@ -7,7 +6,7 @@ export class Database {
   #database = {}
 
   constructor() {
-    fs.writeFile(databasePath, 'utf-8').then(data => {
+    fs.readFile(databasePath, 'utf-8').then(data => {
       this.#database = JSON.parse(data)
     }).catch(() => {
       this.#persist()
@@ -30,8 +29,18 @@ export class Database {
     return data
   }
 
-  select(table) {
+  select(table, search) {
     let data = this.#database[table] ?? []
+
+    if (search) {
+      data = data.filter(row => {
+        return Object.entries(search).some(([key, value]) => {
+          // Skip if value is undefined/null
+          if (!value) return false
+          return (row[key] ?? '').toLowerCase().includes(value.toLowerCase())
+        })
+      })
+    }
 
     return data
   }
