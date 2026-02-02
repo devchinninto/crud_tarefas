@@ -1,3 +1,4 @@
+import { error } from 'node:console'
 import fs from 'node:fs/promises'
 
 const databasePath = new URL('../db.json', import.meta.url)
@@ -43,6 +44,11 @@ export class Database {
     }
 
     return data
+  }
+
+  selectById(table, id) {
+    const data = this.#database[table] ?? []
+    return data.find(row => row.id === id) ?? null
   }
 
   update(table, id, data) {

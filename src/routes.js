@@ -58,6 +58,12 @@ export const routes = [
       const { id } = req.params
       const { title, description } = req.body
 
+      const task = database.selectById('tasks', id)
+
+      if (!task) {
+        return res.writeHead(404).end()
+      }
+
       database.update('tasks', id, {
         title,
         description,
