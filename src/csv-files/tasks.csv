@@ -1,0 +1,11 @@
+title;description
+Estudar Node.js;Completar módulo 2 da formação de Node
+Finalizar projeto CRUD de tarefas;Criar rotas POST GET PUT DELETE e PATCH
+Configurar banco de dados;Implementar persistência com JSON
+Criar middleware;Middleware para parse de JSON no body
+Validar requisições;Adicionar validação de campos obrigatórios
+Documentar API;Escrever documentação das rotas
+Testar endpoints;Testar todas as rotas com diferentes cenários
+Refatorar código;Melhorar organização e legibilidade
+Implementar filtros;Adicionar busca por query params
+Fazer deploy;Publicar aplicação em produção
